@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007 - 2015 Joseph Gaeddert
+ * Copyright (c) 2007 - 2019 Joseph Gaeddert
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -227,7 +227,7 @@ void cpfskdem_init_coherent(cpfskdem _q)
         bw = 0.5f / (float)_q->k;
         // TODO: figure out beta value here
         beta = (_q->M == 2) ? 0.8*gmsk_bt : 1.0*gmsk_bt;
-        _q->data.coherent.mf = firfilt_crcf_create_rnyquist(LIQUID_FIRFILT_GMSKRX,_q->k,_q->m,_q->beta,0);
+        _q->data.coherent.mf = firfilt_crcf_create_rnyquist(LIQUID_FIRFILT_GMSKRX,_q->k,_q->m,beta,0);
         firfilt_crcf_set_scale(_q->data.coherent.mf, 2.0f * bw);
         _q->symbol_delay = _q->m;
         break;
@@ -440,7 +440,7 @@ unsigned int cpfskdem_demodulate_coherent(cpfskdem        _q,
             // save current point
             _q->z_prime = z;
 
-#if 1
+#if DEBUG_CPFSKDEM
             // print result to screen
             printf("  %3u : %12.8f + j%12.8f, <f=%8.4f : %8.4f> (%1u)\n",
                     _q->index++, crealf(z), cimagf(z), phi_hat, v, sym_out);
